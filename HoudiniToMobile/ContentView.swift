@@ -6,20 +6,24 @@ import GLTFSceneKit
 
 struct ContentView: View {
 
-//    @State private var sunlightSwitch = true
-//    @State private var cameraSwitch = true
-    @State private var povName = "distantCamera"
-//    @State private var magnification = CGFloat(1.0)
-//    @State private var isDragging = false
-//    @State private var totalChangePivot = SCNMatrix4Identity
+    private let BUNNY_BODY = "bunny_body"
+    private let BUNNNY_GUTS = "guts"
+    private let CAMERA_NAME = "camera"
+
+    private let materialPrefixes : [String] = ["bamboo-wood-semigloss",
+                                               "oakfloor2",
+                                               "scuffed-plastic",
+                                               "rustediron-streaks"];
+
+    @State private var lightSwitch = true
 
     private var scene: SCNScene!
 
     init() {
         self.scene = loadScene()!
-//        self.scene = testScene()
         setupCamera()
         setupLighting()
+        applyMaterial()
     }
 
     private func loadScene() -> SCNScene? {
@@ -27,12 +31,14 @@ struct ContentView: View {
             let sceneSource = try! GLTFSceneSource(named: "scenes/bunny.glb")
             let scene = try sceneSource.scene(options: [:])
 
-            print("Whats in our scene?")
-            print("rootNode", scene.rootNode)
-            print("children", scene.rootNode.childNodes)
-            print("bunny", scene.rootNode.childNodes.first!)
-            print("background", scene.lightingEnvironment)
-            print("lightingEnvironment", scene.lightingEnvironment)
+            // name some nodes for quick reference
+            // wasn't able to get houdini to do this
+            if let merge = scene.rootNode.childNode(withName: "merge", recursively: true),
+               let guts = merge.childNodes.first,
+               let bunny = merge.childNodes.last {
+                bunny.name = BUNNY_BODY
+                guts.name = BUNNNY_GUTS
+            }
 
             return scene
         } catch {
@@ -41,48 +47,39 @@ struct ContentView: View {
         }
     }
 
-    private func testScene() -> SCNScene {
-        let scene = SCNScene()
-
-        let boxGeo = SCNBox(width: 10.0, height: 10.0, length: 10.0, chamferRadius: 1.0)
-        let boxNode = SCNNode(geometry: boxGeo)
-        scene.rootNode.addChildNode(boxNode)
-
-        return scene
-    }
-
     private func setupCamera() {
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
-        cameraNode.position = SCNVector3Make(0, 0, 25)
-        cameraNode.name = _povName.wrappedValue
+        cameraNode.position = SCNVector3Make(-2, 0.6, 2.6)
+        cameraNode.look(at: SCNVector3Make(0, 0, 0))
+        cameraNode.name = CAMERA_NAME
         scene.rootNode.addChildNode(cameraNode)
 
-        //        let thing = scene.rootNode.childNode(withName: povName, recursively: true)!
-
-        //        thing.camera?.wantsDepthOfField = true
-        //        thing.camera?.focusDistance = 0.8
-        //        thing.camera?.fStop = 5.6
-        //        thing.camera?.wantsHDR = true
-
-        //        thing.camera?.motionBlurIntensity = 1.0
-
-        //        thing.camera?.screenSpaceAmbientOcclusionIntensity = 1.0
+        cameraNode.camera?.wantsHDR = true
     }
 
     private func setupLighting() {
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = SCNLight()
-        ambientLightNode.light!.type = .ambient
-        ambientLightNode.light!.color = UIColor(white: 0.67, alpha: 1.0)
-        scene.rootNode.addChildNode(ambientLightNode)
+        // use IBL
+        scene.lightingEnvironment.contents = "hdrs/Barce_Rooftop_C_3k.hdr"
+        scene.lightingEnvironment.intensity = 2.0
+        scene.background.contents = "hdrs/Barce_Rooftop_C_Env.hdr"
+    }
 
-        let omniLightNode = SCNNode()
-        omniLightNode.light = SCNLight()
-        omniLightNode.light!.type = .omni
-        omniLightNode.light!.color = UIColor(white: 0.75, alpha: 1.0)
-        omniLightNode.position = SCNVector3Make(0, 50, 50)
-        scene.rootNode.addChildNode(omniLightNode)
+    private func applyMaterial() {
+        if let bunny = scene.rootNode.childNode(withName: BUNNY_BODY, recursively: true),
+           let material = bunny.geometry?.firstMaterial {
+
+            // Declare that you intend to work in PBR shading mode
+            // Note that this requires iOS 10 and up
+            material.lightingModel = SCNMaterial.LightingModel.physicallyBased
+
+            // Setup the material maps for your object
+            let materialFilePrefix = materialPrefixes[0];
+            material.diffuse.contents = UIImage(named: "\(materialFilePrefix)-albedo.png")
+            material.roughness.contents = UIImage(named: "\(materialFilePrefix)-roughness.png")
+            material.metalness.contents = UIImage(named: "\(materialFilePrefix)-metal.png")
+            material.normal.contents = UIImage(named: "\(materialFilePrefix)-normal.png")
+        }
     }
 
     var body: some View {
@@ -92,66 +89,60 @@ struct ContentView: View {
             if let scene = scene {
                 SceneView(
                     scene: scene,
-                    pointOfView: scene.rootNode.childNode(withName: povName, recursively: true),
+                    pointOfView: scene.rootNode.childNode(withName: CAMERA_NAME, recursively: true),
                     options: [.allowsCameraControl]
                 )
             }
 
             VStack {
-//                Text("Hello, SwiftUI!")
-//                    .multilineTextAlignment(.leading)
-//                    .padding()
-//                    .foregroundColor(.gray)
-//                    .font(.largeTitle)
-//
-//                Text("And SceneView too")
-//                    .foregroundColor(.gray)
-//                    .font(.title2)
+                Text("Bun Bun!")
+                    .multilineTextAlignment(.leading)
+                    .padding()
+                    .foregroundColor(.white)
+                    .font(.largeTitle)
 
-//                Spacer(minLength: 300)
+                Spacer(minLength: 300)
 
-                /*
                 HStack(spacing: 5) {
                     Button(action: {
                         withAnimation {
-                            self.sunlightSwitch.toggle()
+                            self.lightSwitch.toggle()
                         }
 
-                        let sunlight = self.scene.rootNode.childNode(
-                            withName: "sunlightNode",
-                            recursively: true)?.light
-
-                        if self.sunlightSwitch == true {
-                            sunlight!.intensity = 2000.0
-                        } else {
-                            sunlight!.intensity = 0.0
-                        }
+//                        let sunlight = self.scene.rootNode.childNode(
+//                            withName: "sunlightNode",
+//                            recursively: true)?.light
+//
+//                        if self.sunlightSwitch == true {
+//                            sunlight!.intensity = 2000.0
+//                        } else {
+//                            sunlight!.intensity = 0.0
+//                        }
                     }) {
-                        Image(systemName: sunlightSwitch ? "lightbulb.fill" : "lightbulb")
+                        Image(systemName: lightSwitch ? "lightbulb.fill" : "lightbulb")
                             .imageScale(.large)
                             .accessibility(label: Text("Light Switch"))
                             .padding()
                     }
 
-                    Button(action: {
-                        withAnimation {
-                            self.cameraSwitch.toggle()
-                        }
-                        if self.cameraSwitch == false {
-                            povName = "shipCamera"
-                        }
-                        if self.cameraSwitch == true {
-                            povName = "distantCamera"
-                        }
-                        print("\(povName)")
-                    }) {
-                        Image(systemName: cameraSwitch ? "video.fill" : "video")
-                            .imageScale(.large)
-                            .accessibility(label: Text("Camera Switch"))
-                            .padding()
-                    }
+//                    Button(action: {
+//                        withAnimation {
+//                            self.cameraSwitch.toggle()
+//                        }
+//                        if self.cameraSwitch == false {
+//                            povName = "shipCamera"
+//                        }
+//                        if self.cameraSwitch == true {
+//                            povName = "distantCamera"
+//                        }
+//                        print("\(povName)")
+//                    }) {
+//                        Image(systemName: cameraSwitch ? "video.fill" : "video")
+//                            .imageScale(.large)
+//                            .accessibility(label: Text("Camera Switch"))
+//                            .padding()
+//                    }
                 }
-                 */
             }
         }
     }
