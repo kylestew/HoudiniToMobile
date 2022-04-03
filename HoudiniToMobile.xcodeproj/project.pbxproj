@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FF0BFEE827EE6C9D003C2DE1 /* bunny.abc in Resources */ = {isa = PBXBuildFile; fileRef = FF0BFEE727EE6C9D003C2DE1 /* bunny.abc */; };
-		FF0BFEEA27EE6D03003C2DE1 /* bunny.usd in Resources */ = {isa = PBXBuildFile; fileRef = FF0BFEE927EE6D03003C2DE1 /* bunny.usd */; };
-		FF0BFEEC27EE6DDD003C2DE1 /* bunny.obj in Resources */ = {isa = PBXBuildFile; fileRef = FF0BFEEB27EE6DDD003C2DE1 /* bunny.obj */; };
+		FF6BCFDF27F9FBC700AF4758 /* GLTFSceneKit in Frameworks */ = {isa = PBXBuildFile; productRef = FF6BCFDE27F9FBC700AF4758 /* GLTFSceneKit */; };
+		FF6BCFE127F9FDD300AF4758 /* scenes in Resources */ = {isa = PBXBuildFile; fileRef = FF6BCFE027F9FDD300AF4758 /* scenes */; };
 		FFCC6F2027ED4172005C2958 /* HoudiniToMobileApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFCC6F1F27ED4172005C2958 /* HoudiniToMobileApp.swift */; };
 		FFCC6F2227ED4172005C2958 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFCC6F2127ED4172005C2958 /* ContentView.swift */; };
 		FFCC6F2427ED4179005C2958 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFCC6F2327ED4179005C2958 /* Assets.xcassets */; };
@@ -18,9 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		FF0BFEE727EE6C9D003C2DE1 /* bunny.abc */ = {isa = PBXFileReference; lastKnownFileType = file; name = bunny.abc; path = scenes/bunny.abc; sourceTree = "<group>"; };
-		FF0BFEE927EE6D03003C2DE1 /* bunny.usd */ = {isa = PBXFileReference; lastKnownFileType = file; name = bunny.usd; path = scenes/bunny.usd; sourceTree = "<group>"; };
-		FF0BFEEB27EE6DDD003C2DE1 /* bunny.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bunny.obj; path = scenes/bunny.obj; sourceTree = "<group>"; };
+		FF6BCFE027F9FDD300AF4758 /* scenes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scenes; sourceTree = "<group>"; };
 		FFCC6F1C27ED4172005C2958 /* HoudiniToMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoudiniToMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFCC6F1F27ED4172005C2958 /* HoudiniToMobileApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoudiniToMobileApp.swift; sourceTree = "<group>"; };
 		FFCC6F2127ED4172005C2958 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -34,6 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF6BCFDF27F9FBC700AF4758 /* GLTFSceneKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,9 +57,7 @@
 		FFCC6F1E27ED4172005C2958 /* HoudiniToMobile */ = {
 			isa = PBXGroup;
 			children = (
-				FF0BFEEB27EE6DDD003C2DE1 /* bunny.obj */,
-				FF0BFEE927EE6D03003C2DE1 /* bunny.usd */,
-				FF0BFEE727EE6C9D003C2DE1 /* bunny.abc */,
+				FF6BCFE027F9FDD300AF4758 /* scenes */,
 				FFCC6F2D27ED4295005C2958 /* art.scnassets */,
 				FFCC6F2127ED4172005C2958 /* ContentView.swift */,
 				FFCC6F1F27ED4172005C2958 /* HoudiniToMobileApp.swift */,
@@ -95,6 +91,9 @@
 			dependencies = (
 			);
 			name = HoudiniToMobile;
+			packageProductDependencies = (
+				FF6BCFDE27F9FBC700AF4758 /* GLTFSceneKit */,
+			);
 			productName = HoudiniToMobile;
 			productReference = FFCC6F1C27ED4172005C2958 /* HoudiniToMobile.app */;
 			productType = "com.apple.product-type.application";
@@ -123,6 +122,9 @@
 				Base,
 			);
 			mainGroup = FFCC6F1327ED4172005C2958;
+			packageReferences = (
+				FF6BCFDD27F9FBC700AF4758 /* XCRemoteSwiftPackageReference "GLTFSceneKit" */,
+			);
 			productRefGroup = FFCC6F1D27ED4172005C2958 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -137,10 +139,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF6BCFE127F9FDD300AF4758 /* scenes in Resources */,
 				FFCC6F2727ED4179005C2958 /* Preview Assets.xcassets in Resources */,
-				FF0BFEE827EE6C9D003C2DE1 /* bunny.abc in Resources */,
-				FF0BFEEC27EE6DDD003C2DE1 /* bunny.obj in Resources */,
-				FF0BFEEA27EE6D03003C2DE1 /* bunny.usd in Resources */,
 				FFCC6F2E27ED4295005C2958 /* art.scnassets in Resources */,
 				FFCC6F2427ED4179005C2958 /* Assets.xcassets in Resources */,
 			);
@@ -357,6 +357,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FF6BCFDD27F9FBC700AF4758 /* XCRemoteSwiftPackageReference "GLTFSceneKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/magicien/GLTFSceneKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FF6BCFDE27F9FBC700AF4758 /* GLTFSceneKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF6BCFDD27F9FBC700AF4758 /* XCRemoteSwiftPackageReference "GLTFSceneKit" */;
+			productName = GLTFSceneKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FFCC6F1427ED4172005C2958 /* Project object */;
 }

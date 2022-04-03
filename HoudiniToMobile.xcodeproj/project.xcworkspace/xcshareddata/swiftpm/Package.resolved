@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "GLTFSceneKit",
+        "repositoryURL": "https://github.com/magicien/GLTFSceneKit",
+        "state": {
+          "branch": null,
+          "revision": "9e9c7ba667f4c6351eeb70408d4ec1df5b83f856",
+          "version": "0.4.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
