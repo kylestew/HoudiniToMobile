@@ -15,7 +15,6 @@
 		FFCC6F2227ED4172005C2958 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFCC6F2127ED4172005C2958 /* ContentView.swift */; };
 		FFCC6F2427ED4179005C2958 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFCC6F2327ED4179005C2958 /* Assets.xcassets */; };
 		FFCC6F2727ED4179005C2958 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFCC6F2627ED4179005C2958 /* Preview Assets.xcassets */; };
-		FFCC6F2E27ED4295005C2958 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = FFCC6F2D27ED4295005C2958 /* art.scnassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +26,6 @@
 		FFCC6F2127ED4172005C2958 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FFCC6F2327ED4179005C2958 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FFCC6F2627ED4179005C2958 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		FFCC6F2D27ED4295005C2958 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +62,6 @@
 				FF4DDD8327FA579B0091D502 /* materials */,
 				FF4DDD8127FA511F0091D502 /* hdrs */,
 				FF6BCFE027F9FDD300AF4758 /* scenes */,
-				FFCC6F2D27ED4295005C2958 /* art.scnassets */,
 				FFCC6F2127ED4172005C2958 /* ContentView.swift */,
 				FFCC6F1F27ED4172005C2958 /* HoudiniToMobileApp.swift */,
 				FFCC6F2327ED4179005C2958 /* Assets.xcassets */,
@@ -147,7 +144,6 @@
 			files = (
 				FF6BCFE127F9FDD300AF4758 /* scenes in Resources */,
 				FFCC6F2727ED4179005C2958 /* Preview Assets.xcassets in Resources */,
-				FFCC6F2E27ED4295005C2958 /* art.scnassets in Resources */,
 				FF4DDD8427FA579B0091D502 /* materials in Resources */,
 				FF4DDD8227FA511F0091D502 /* hdrs in Resources */,
 				FFCC6F2427ED4179005C2958 /* Assets.xcassets in Resources */,

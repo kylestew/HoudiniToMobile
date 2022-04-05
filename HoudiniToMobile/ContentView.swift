@@ -10,20 +10,23 @@ struct ContentView: View {
     private let BUNNNY_GUTS = "guts"
     private let CAMERA_NAME = "camera"
 
-    private let materialPrefixes : [String] = ["bamboo-wood-semigloss",
-                                               "oakfloor2",
-                                               "scuffed-plastic",
-                                               "rustediron-streaks"];
+    private let materialPrefixes : [String] = [
+        "paper",
+        "bamboo-wood-semigloss",
+        "oakfloor2",
+        "scuffed-plastic",
+        "rustediron-streaks"];
 
     @State private var lightSwitch = true
 
     private var scene: SCNScene!
+    private var matIndex = 0
 
     init() {
         self.scene = loadScene()!
         setupCamera()
         setupLighting()
-        applyMaterial()
+        applyMaterial(matIndex)
     }
 
     private func loadScene() -> SCNScene? {
@@ -65,7 +68,16 @@ struct ContentView: View {
         scene.background.contents = "hdrs/Barce_Rooftop_C_Env.hdr"
     }
 
-    private func applyMaterial() {
+    private func loadMaterialResource(_ named: String, type: String) -> UIImage? {
+        guard let path = Bundle.main.path(forResource: "\(named)-\(type)",
+                                          ofType: ".png",
+                                          inDirectory: "materials/\(named)") else {
+            return nil
+        }
+        return UIImage(contentsOfFile: path)
+    }
+
+    private func applyMaterial(_ idx: Int) {
         if let bunny = scene.rootNode.childNode(withName: BUNNY_BODY, recursively: true),
            let material = bunny.geometry?.firstMaterial {
 
@@ -74,11 +86,11 @@ struct ContentView: View {
             material.lightingModel = SCNMaterial.LightingModel.physicallyBased
 
             // Setup the material maps for your object
-            let materialFilePrefix = materialPrefixes[0];
-            material.diffuse.contents = UIImage(named: "\(materialFilePrefix)-albedo.png")
-            material.roughness.contents = UIImage(named: "\(materialFilePrefix)-roughness.png")
-            material.metalness.contents = UIImage(named: "\(materialFilePrefix)-metal.png")
-            material.normal.contents = UIImage(named: "\(materialFilePrefix)-normal.png")
+            let materialFilePrefix = materialPrefixes[idx];
+            material.diffuse.contents = loadMaterialResource(materialFilePrefix, type: "albedo")
+            material.roughness.contents = loadMaterialResource(materialFilePrefix, type: "roughness")
+            material.metalness.contents = loadMaterialResource(materialFilePrefix, type: "metal")
+            material.normal.contents = loadMaterialResource(materialFilePrefix, type: "normal")
         }
     }
 
@@ -95,15 +107,53 @@ struct ContentView: View {
             }
 
             VStack {
-                Text("Bun Bun!")
-                    .multilineTextAlignment(.leading)
-                    .padding()
-                    .foregroundColor(.white)
-                    .font(.largeTitle)
-
-                Spacer(minLength: 300)
+                Spacer()
 
                 HStack(spacing: 5) {
+                    Button(action: {
+    //                        withAnimation {
+    //                            self.lightSwitch.toggle()
+    //                        }
+
+    //                        let sunlight = self.scene.rootNode.childNode(
+    //                            withName: "sunlightNode",
+    //                            recursively: true)?.light
+    //
+    //                        if self.sunlightSwitch == true {
+    //                            sunlight!.intensity = 2000.0
+    //                        } else {
+    //                            sunlight!.intensity = 0.0
+    //                        }
+                    }) {
+                        Image(systemName: "arrow.left")
+                            .imageScale(.large)
+                            .foregroundColor(.white)
+                            .accessibility(label: Text("Next Material"))
+                            .padding()
+                    }
+
+                    Button(action: {
+                        withAnimation {
+                            self.lightSwitch.toggle()
+                        }
+
+//                        let sunlight = self.scene.rootNode.childNode(
+//                            withName: "sunlightNode",
+//                            recursively: true)?.light
+//
+//                        if self.sunlightSwitch == true {
+//                            sunlight!.intensity = 2000.0
+//                        } else {
+//                            sunlight!.intensity = 0.0
+//                        }
+                    }) {
+                        Image(systemName: "lasso.and.sparkles")
+                            .imageScale(.large)
+                            .foregroundColor(.white)
+                            .accessibility(label: Text("Material"))
+                            .padding()
+                    }
+
                     Button(action: {
                         withAnimation {
                             self.lightSwitch.toggle()
@@ -121,27 +171,32 @@ struct ContentView: View {
                     }) {
                         Image(systemName: lightSwitch ? "lightbulb.fill" : "lightbulb")
                             .imageScale(.large)
+                            .foregroundColor(.white)
                             .accessibility(label: Text("Light Switch"))
                             .padding()
                     }
 
-//                    Button(action: {
+                    Button(action: {
 //                        withAnimation {
-//                            self.cameraSwitch.toggle()
+//                            self.lightSwitch.toggle()
 //                        }
-//                        if self.cameraSwitch == false {
-//                            povName = "shipCamera"
+
+//                        let sunlight = self.scene.rootNode.childNode(
+//                            withName: "sunlightNode",
+//                            recursively: true)?.light
+//
+//                        if self.sunlightSwitch == true {
+//                            sunlight!.intensity = 2000.0
+//                        } else {
+//                            sunlight!.intensity = 0.0
 //                        }
-//                        if self.cameraSwitch == true {
-//                            povName = "distantCamera"
-//                        }
-//                        print("\(povName)")
-//                    }) {
-//                        Image(systemName: cameraSwitch ? "video.fill" : "video")
-//                            .imageScale(.large)
-//                            .accessibility(label: Text("Camera Switch"))
-//                            .padding()
-//                    }
+                    }) {
+                        Image(systemName: "arrow.right")
+                            .imageScale(.large)
+                            .foregroundColor(.white)
+                            .accessibility(label: Text("Next Material"))
+                            .padding()
+                    }
                 }
             }
         }
