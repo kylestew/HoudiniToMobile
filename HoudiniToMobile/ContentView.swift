@@ -18,9 +18,9 @@ struct ContentView: View {
         "rustediron-streaks"];
 
     @State private var lightSwitch = true
+    @State private var matIndex = 0
 
     private var scene: SCNScene!
-    private var matIndex = 0
 
     init() {
         self.scene = loadScene()!
@@ -66,6 +66,16 @@ struct ContentView: View {
         scene.lightingEnvironment.contents = "hdrs/Barce_Rooftop_C_3k.hdr"
         scene.lightingEnvironment.intensity = 2.0
         scene.background.contents = "hdrs/Barce_Rooftop_C_Env.hdr"
+
+        let lightNode = SCNNode()
+        let spotlight = SCNLight()
+        spotlight.type = .spot
+        spotlight.intensity = 400
+        lightNode.light = spotlight
+        lightNode.name = "spotlight"
+        lightNode.position = SCNVector3(2, 2, 3)
+        lightNode.look(at: SCNVector3Make(0, 0, 0))
+        scene.rootNode.addChildNode(lightNode)
     }
 
     private func loadMaterialResource(_ named: String, type: String) -> UIImage? {
@@ -92,6 +102,11 @@ struct ContentView: View {
             material.metalness.contents = loadMaterialResource(materialFilePrefix, type: "metal")
             material.normal.contents = loadMaterialResource(materialFilePrefix, type: "normal")
         }
+    }
+
+    private func nextMaterial() {
+        matIndex = matIndex == materialPrefixes.count - 1 ? 0 : matIndex + 1
+        applyMaterial(matIndex)
     }
 
     var body: some View {
@@ -133,19 +148,7 @@ struct ContentView: View {
                     }
 
                     Button(action: {
-                        withAnimation {
-                            self.lightSwitch.toggle()
-                        }
-
-//                        let sunlight = self.scene.rootNode.childNode(
-//                            withName: "sunlightNode",
-//                            recursively: true)?.light
-//
-//                        if self.sunlightSwitch == true {
-//                            sunlight!.intensity = 2000.0
-//                        } else {
-//                            sunlight!.intensity = 0.0
-//                        }
+                        nextMaterial()
                     }) {
                         Image(systemName: "lasso.and.sparkles")
                             .imageScale(.large)
@@ -159,15 +162,14 @@ struct ContentView: View {
                             self.lightSwitch.toggle()
                         }
 
-//                        let sunlight = self.scene.rootNode.childNode(
-//                            withName: "sunlightNode",
-//                            recursively: true)?.light
-//
-//                        if self.sunlightSwitch == true {
-//                            sunlight!.intensity = 2000.0
-//                        } else {
-//                            sunlight!.intensity = 0.0
-//                        }
+                        let light = self.scene.rootNode.childNode(
+                            withName: "spotlight",
+                            recursively: true)?.light
+                        if self.lightSwitch == true {
+                            light!.intensity = 400.0
+                        } else {
+                            light!.intensity = 0.0
+                        }
                     }) {
                         Image(systemName: lightSwitch ? "lightbulb.fill" : "lightbulb")
                             .imageScale(.large)
